@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mosque_app/blocs/mainBloc.dart';
+import 'package:provider/provider.dart';
 
 import './pages/home.dart';
 
@@ -12,17 +14,20 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: Brightness.dark,
-        backgroundColor: Color(0xFF303030),
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return ChangeNotifierProvider(
+      create: (context) => MainBloc(),
+      builder: (ctx, _) => MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          brightness: Brightness.dark,
+          backgroundColor: Color(0xFF303030),
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        routes: {
+          '/': (ctx) => Welcome(),
+        },
       ),
-      routes: {
-        '/': (ctx) => Home(),
-      },
     );
   }
 }
