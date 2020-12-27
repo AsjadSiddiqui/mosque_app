@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "519135498110",
+    "project_id": "masjid-app-111",
+    "storage_bucket": "masjid-app-111.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519135498110:android:47e4d216e31245c8792d2f",
+        "android_client_info": {
+          "package_name": "com.mosque.my_mosque"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "519135498110-vq0ueid34fmlt2l4et4gbmgp9b3tnle6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mosque.my_mosque",
+            "certificate_hash": "31c87d39b73781e8d658d3458d4937d2d6e0253f"
+          }
+        },
+        {
+          "client_id": "519135498110-5b3694hg51mlov636h3t8mb2mqhq1455.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-p87VL4DrN_bkU2Ghj64Kg5xR0XFel2c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "519135498110-5b3694hg51mlov636h3t8mb2mqhq1455.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
