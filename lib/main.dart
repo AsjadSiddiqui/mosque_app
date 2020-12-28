@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mosque_app/blocs/mainBloc.dart';
+import 'package:mosque_app/pages/cities.dart';
 import 'package:provider/provider.dart';
 
 import './pages/home.dart';
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         routes: {
-          '/': (ctx) => Welcome(),
+          // '/': (ctx) => Welcome(),
+          '/': (ctx) => WelcomeCities(),
         },
       ),
     );
