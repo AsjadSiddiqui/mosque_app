@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mosque_app/blocs/mainBloc.dart';
+import 'package:mosque_app/pages/cities.dart';
 import 'package:provider/provider.dart';
 
-import './pages/home.dart';
+import 'pages/selectCountry.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,8 +25,14 @@ class MyApp extends StatelessWidget {
           backgroundColor: Color(0xFF303030),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
+        //29dec...
+        // home: Welcome(),
+
+        ///
+
         routes: {
-          '/': (ctx) => Welcome(),
+          '/': (ctx) => SelectCountry(),
+          '/cities': (ctx) => WelcomeCities(),
         },
       ),
     );

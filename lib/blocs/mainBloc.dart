@@ -16,4 +16,17 @@ class MainBloc with ChangeNotifier {
 
     return countryNames;
   }
+
+  Future<List<String>> getAllCities(String country) async {
+    final citiesSnapshot = (await db.collection('masjid').doc(country).collection('cities').get()).docs;
+
+    List<String> cityNames = [];
+
+    citiesSnapshot.forEach((city) {
+      print(city.id);
+      cityNames.add(city.id);
+    });
+
+    return cityNames;
+  }
 }

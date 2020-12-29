@@ -28,6 +28,7 @@ dependencies:
   google_fonts: ^1.1.1
   cloud_firestore: ^0.14.4
   provider: ^4.3.2+3
+  flutter_spinkit: ^4.1.2+1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -63,19 +64,34 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Montserrat
-  #     fonts:
-  #       - asset: fonts/montserrat_regular.ttf
-  #       - asset: fonts/montserrat_italic.ttf
-  #         style: italic
-  #       - asset: fonts/montserrat_bold.ttf
-  #         weight: 700
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/montserrat_regular.ttf
+        - asset: assets/fonts/montserrat_italic.ttf
+          style: italic
+        - asset: assets/fonts/montserrat_bold_italic.ttf
+          style: italic
+          weight: 700
+        - asset: assets/fonts/montserrat_thin.ttf
+          weight: 100
+        - asset: assets/fonts/montserrat_light.ttf
+          weight: 300
+        - asset: assets/fonts/montserrat_medium.ttf
+          weight: 500
+        - asset: assets/fonts/montserrat_semi_bold.ttf
+          weight: 600
+        - asset: assets/fonts/montserrat_bold.ttf
+          weight: 700
+        - asset: assets/fonts/montserrat_extra_bold.ttf
+          weight: 800
+        - asset: assets/fonts/montserrat_black.ttf
+          weight: 900
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/open_sans_regular.ttf
+        - asset: assets/fonts/open_sans_bold.ttf
+          weight: 700
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

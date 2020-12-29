@@ -1,25 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../blocs/mainBloc.dart';
 
-class Welcome extends StatefulWidget {
-  Welcome({Key key}) : super(key: key);
+class WelcomeCities extends StatefulWidget {
+  WelcomeCities({Key key}) : super(key: key);
 
   @override
-  _WelcomeState createState() => _WelcomeState();
+  _WelcomeCitiesState createState() => _WelcomeCitiesState();
 }
 
-class _WelcomeState extends State<Welcome> {
+class _WelcomeCitiesState extends State<WelcomeCities> {
   @override
   Widget build(BuildContext context) {
     final statusBarHeight = MediaQuery.of(context).padding.top;
-    final height = MediaQuery.of(context).size.height - statusBarHeight;
+    final height = MediaQuery.of(context).size.height -
+        statusBarHeight -
+        AppBar().preferredSize.height;
     final width = MediaQuery.of(context).size.width;
     final mainBloc = Provider.of<MainBloc>(context);
 
+    final country = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black.withOpacity(0.6),
+        title: Text(
+          'Select City',
+          style: TextStyle(
+            fontFamily: 'Montserrat',
+            fontSize: 20,
+            fontWeight: FontWeight.w300,
+          ),
+        ),
+      ),
       body: Container(
         margin: EdgeInsets.only(top: statusBarHeight),
         width: width,
@@ -27,25 +42,39 @@ class _WelcomeState extends State<Welcome> {
         color: Color(0xFF303030),
         child: Column(
           children: [
-            SizedBox(
-              height: 35,
-            ),
-            Text(
-              'WELCOME',
-              style: GoogleFonts.openSans(
-                fontSize: 20,
-                fontWeight: FontWeight.w300,
+            // SizedBox(
+            //   height: 35,
+            // ),
+            Hero(
+              transitionOnUserGestures: true,
+              tag: country,
+              child: Material(
+                child: Text(
+                  country,
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 22,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'Select your masjid, if it is registered',
-              style: GoogleFonts.montserrat(
-                fontWeight: FontWeight.w300,
-              ),
-            ),
+            // Text(
+            //   'WELCOME',
+            //   style: GoogleFonts.openSans(
+            //     fontSize: 20,
+            //     fontWeight: FontWeight.w300,
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 10,
+            // ),
+            // Text(
+            //   'Select City',
+            //   style: GoogleFonts.montserrat(
+            //     fontWeight: FontWeight.w300,
+            //   ),
+            // ),
             SizedBox(
               height: 20,
             ),
@@ -54,14 +83,14 @@ class _WelcomeState extends State<Welcome> {
               width: width,
               child: SingleChildScrollView(
                 child: FutureBuilder(
-                  future: mainBloc.getAllCountries(),
+                  future: mainBloc.getAllCities(country),
                   builder: (ctx, snapshot) {
                     if (snapshot.hasData) {
-                      final countries = (snapshot.data as List<String>);
+                      final cities = (snapshot.data as List<String>);
                       List<Widget> renderData = [];
 
-                      countries.forEach((country) {
-                        print('Country: $country');
+                      cities.forEach((city) {
+                        print('City: $city');
                         renderData.add(
                           Container(
                             width: 0.9 * width,
@@ -72,10 +101,11 @@ class _WelcomeState extends State<Welcome> {
                               color: Color(0xFF424242),
                               onPressed: () {},
                               child: Text(
-                                country,
-                                style: GoogleFonts.montserrat(
+                                city,
+                                style: TextStyle(
+                                  fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w300,
-                                  fontSize: 18,
+                                  fontSize: 22,
                                 ),
                               ),
                             ),
@@ -88,14 +118,20 @@ class _WelcomeState extends State<Welcome> {
                         );
                       });
                       return Column(
-                        children: [
-                          ...renderData,
-                          ...renderData,
-                          ...renderData,
-                        ],
+                        children: renderData,
                       );
                     } else {
-                      return CircularProgressIndicator();
+                      return Container(
+                        width: width,
+                        height: 0.7 * height,
+                        child: Center(
+                          child: SpinKitWave(
+                            // size: ,
+                            color: Colors.white,
+                            // type: SpinKitWaveType.,
+                          ),
+                        ),
+                      );
                     }
                   },
                 ),
@@ -116,7 +152,10 @@ class _WelcomeState extends State<Welcome> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Didn\'t find your country on the list?'),
+                Text(
+                  'Didn\'t find your city on the list?',
+                  style: TextStyle(fontFamily: 'Montserrat'),
+                ),
                 SizedBox(
                   width: 10,
                 ),
@@ -127,7 +166,7 @@ class _WelcomeState extends State<Welcome> {
                   onPressed: () {},
                   child: Text(
                     'REGISTER',
-                    style: GoogleFonts.montserrat(),
+                    style: TextStyle(fontFamily: 'Montserrat'),
                   ),
                 ),
               ],
