@@ -2,35 +2,70 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../blocs/mainBloc.dart';
+import '../blocs/main_bloc.dart';
 
 class SelectCountry extends StatefulWidget {
-  SelectCountry({Key key}) : super(key: key);
+  const SelectCountry({Key key}) : super(key: key);
 
   @override
   _SelectCountryState createState() => _SelectCountryState();
 }
 
 class _SelectCountryState extends State<SelectCountry> {
+  bool isLoading = true;
+  bool hasData = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final MainBloc mainBloc = Provider.of<MainBloc>(context, listen: false);
+    mainBloc.initHive().then((_) {
+      print('Value:');
+      print(mainBloc.read('hasSelectedMasjid'));
+      if (mainBloc.read('hasSelectedMasjid') != null &&
+          mainBloc.read('hasSelectedMasjid') == true) {
+        mainBloc.getAllData();
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          '/home',
+          (_) => false,
+        );
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final statusBarHeight = MediaQuery.of(context).padding.top;
-    final height = MediaQuery.of(context).size.height - statusBarHeight;
-    final width = MediaQuery.of(context).size.width;
-    final mainBloc = Provider.of<MainBloc>(context);
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    final double height = MediaQuery.of(context).size.height - statusBarHeight;
+    final double width = MediaQuery.of(context).size.width;
+    final MainBloc mainBloc = Provider.of<MainBloc>(context);
+
+    if (isLoading) {
+      return const Scaffold(
+        body: Center(
+          child: SpinKitWave(
+            color: Colors.white,
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       body: Container(
         margin: EdgeInsets.only(top: statusBarHeight),
         width: width,
         height: height,
-        color: Color(0xFF303030),
+        color: const Color(0xFF303030),
         child: Column(
-          children: [
-            SizedBox(
+          children: <Widget>[
+            const SizedBox(
               height: 35,
             ),
-            Text(
+            const Text(
               'WELCOME',
               style: TextStyle(
                 fontFamily: 'Montserrat',
@@ -38,40 +73,41 @@ class _SelectCountryState extends State<SelectCountry> {
                 fontWeight: FontWeight.w300,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Text(
+            const Text(
               'Select your masjid, if it is registered',
               style: TextStyle(
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w300,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Container(
+            SizedBox(
               height: 0.76 * height,
               width: width,
               child: SingleChildScrollView(
-                child: FutureBuilder(
+                child: FutureBuilder<List<String>>(
                   future: mainBloc.getAllCountries(),
-                  builder: (ctx, snapshot) {
+                  builder:
+                      (BuildContext ctx, AsyncSnapshot<List<String>> snapshot) {
                     if (snapshot.hasData) {
-                      final countries = (snapshot.data as List<String>);
-                      List<Widget> renderData = [];
+                      final List<String> countries = snapshot.data;
+                      final List<Widget> renderData = <Widget>[];
 
-                      countries.forEach((country) {
+                      countries.forEach((String country) {
                         print('Country: $country');
                         renderData.add(
-                          Container(
+                          SizedBox(
                             width: 0.9 * width,
                             height: 60,
                             child: FlatButton(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25)),
-                              color: Color(0xFF424242),
+                              color: const Color(0xFF424242),
                               onPressed: () {
                                 Navigator.of(context).pushNamed(
                                   '/cities',
@@ -85,7 +121,7 @@ class _SelectCountryState extends State<SelectCountry> {
                                   color: Colors.transparent,
                                   child: Text(
                                     country,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontFamily: 'Montserrat',
                                       fontWeight: FontWeight.w300,
                                       fontSize: 22,
@@ -97,20 +133,20 @@ class _SelectCountryState extends State<SelectCountry> {
                           ),
                         );
                         renderData.add(
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                         );
                       });
                       return Column(
-                        children: [
+                        children: <Widget>[
                           ...renderData,
                           // ...renderData,
                           // ...renderData,
                         ],
                       );
                     } else {
-                      return SpinKitWave(
+                      return const SpinKitWave(
                         // size: ,
                         color: Colors.white,
                         // type: SpinKitWaveType.,
@@ -120,10 +156,10 @@ class _SelectCountryState extends State<SelectCountry> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 2,
             ),
-            Container(
+            SizedBox(
               width: 0.96 * width,
               child: Divider(
                 height: 2,
@@ -134,20 +170,20 @@ class _SelectCountryState extends State<SelectCountry> {
             Expanded(child: Container()),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Didn\'t find your country on the list?',
+              children: <Widget>[
+                const Text(
+                  "Didn't find your country on the list?",
                   style: TextStyle(fontFamily: 'Montserrat'),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 FlatButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
-                  color: Color(0xFF424242),
+                  color: const Color(0xFF424242),
                   onPressed: () {},
-                  child: Text(
+                  child: const Text(
                     'REGISTER',
                     style: TextStyle(fontFamily: 'Montserrat'),
                   ),

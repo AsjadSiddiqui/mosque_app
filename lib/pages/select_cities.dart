@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../blocs/mainBloc.dart';
+import '../blocs/main_bloc.dart';
 
 class WelcomeCities extends StatefulWidget {
-  WelcomeCities({Key key}) : super(key: key);
+  const WelcomeCities({Key key}) : super(key: key);
 
   @override
   _WelcomeCitiesState createState() => _WelcomeCitiesState();
@@ -14,19 +14,19 @@ class WelcomeCities extends StatefulWidget {
 class _WelcomeCitiesState extends State<WelcomeCities> {
   @override
   Widget build(BuildContext context) {
-    final statusBarHeight = MediaQuery.of(context).padding.top;
-    final height = MediaQuery.of(context).size.height -
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    final double height = MediaQuery.of(context).size.height -
         statusBarHeight -
         AppBar().preferredSize.height;
-    final width = MediaQuery.of(context).size.width;
-    final mainBloc = Provider.of<MainBloc>(context);
+    final double width = MediaQuery.of(context).size.width;
+    final MainBloc mainBloc = Provider.of<MainBloc>(context);
 
-    final country = ModalRoute.of(context).settings.arguments;
+    final Object country = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black.withOpacity(0.6),
-        title: Text(
+        title: const Text(
           'Select City',
           style: TextStyle(
             fontFamily: 'Montserrat',
@@ -39,9 +39,9 @@ class _WelcomeCitiesState extends State<WelcomeCities> {
         margin: EdgeInsets.only(top: statusBarHeight),
         width: width,
         height: height,
-        color: Color(0xFF303030),
+        color: const Color(0xFF303030),
         child: Column(
-          children: [
+          children: <Widget>[
             // SizedBox(
             //   height: 35,
             // ),
@@ -50,8 +50,8 @@ class _WelcomeCitiesState extends State<WelcomeCities> {
               tag: country,
               child: Material(
                 child: Text(
-                  country,
-                  style: TextStyle(
+                  country as String,
+                  style: const TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 22,
                     fontWeight: FontWeight.w300,
@@ -75,34 +75,45 @@ class _WelcomeCitiesState extends State<WelcomeCities> {
             //     fontWeight: FontWeight.w300,
             //   ),
             // ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Container(
+            SizedBox(
               height: 0.76 * height,
               width: width,
               child: SingleChildScrollView(
-                child: FutureBuilder(
-                  future: mainBloc.getAllCities(country),
-                  builder: (ctx, snapshot) {
+                child: FutureBuilder<List<String>>(
+                  future: mainBloc.getAllCities(country as String),
+                  builder:
+                      (BuildContext ctx, AsyncSnapshot<List<String>> snapshot) {
                     if (snapshot.hasData) {
-                      final cities = (snapshot.data as List<String>);
-                      List<Widget> renderData = [];
+                      final List<String> cities = snapshot.data;
+                      final List<Widget> renderData = <Widget>[];
 
-                      cities.forEach((city) {
+                      cities.forEach((String city) {
+                        // ignore: avoid_print
                         print('City: $city');
                         renderData.add(
-                          Container(
+                          SizedBox(
                             width: 0.9 * width,
                             height: 60,
                             child: FlatButton(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25)),
-                              color: Color(0xFF424242),
-                              onPressed: () {},
+                              color: const Color(0xFF424242),
+                              onPressed: () {
+                                print('Pressed $city!');
+                                Navigator.of(context).pushNamed(
+                                  '/masjids',
+                                  arguments: <String, dynamic>{
+                                    'city': city,
+                                    'country': country,
+                                  },
+                                );
+                              },
                               child: Text(
                                 city,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w300,
                                   fontSize: 22,
@@ -112,7 +123,7 @@ class _WelcomeCitiesState extends State<WelcomeCities> {
                           ),
                         );
                         renderData.add(
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                         );
@@ -121,10 +132,10 @@ class _WelcomeCitiesState extends State<WelcomeCities> {
                         children: renderData,
                       );
                     } else {
-                      return Container(
+                      return SizedBox(
                         width: width,
                         height: 0.7 * height,
-                        child: Center(
+                        child: const Center(
                           child: SpinKitWave(
                             // size: ,
                             color: Colors.white,
@@ -137,10 +148,10 @@ class _WelcomeCitiesState extends State<WelcomeCities> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 2,
             ),
-            Container(
+            SizedBox(
               width: 0.96 * width,
               child: Divider(
                 height: 2,
@@ -151,20 +162,20 @@ class _WelcomeCitiesState extends State<WelcomeCities> {
             Expanded(child: Container()),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Didn\'t find your city on the list?',
+              children: <Widget>[
+                const Text(
+                  "Didn't find your city on the list?",
                   style: TextStyle(fontFamily: 'Montserrat'),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 FlatButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
-                  color: Color(0xFF424242),
+                  color: const Color(0xFF424242),
                   onPressed: () {},
-                  child: Text(
+                  child: const Text(
                     'REGISTER',
                     style: TextStyle(fontFamily: 'Montserrat'),
                   ),
